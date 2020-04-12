@@ -6,4 +6,5 @@ body {
 }
 .game-section {
     display: none;
+    flex-direction: column;
 }

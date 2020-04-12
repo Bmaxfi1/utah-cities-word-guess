@@ -299,30 +299,56 @@ var currentWordEl = document.getElementsByClassName("current-word")[0];
 var currentWord = "";
 var correctGuessedLetters = "";
 var wrongGuessedLetters = "";
+var blankSlots = "";
+var correctLetterLocation = "";
+var incompleteWord = "";
 
 function initiateGame() {
   instructionsEl.style.display = "none";
   startButtonEl.style.display = "none";
   resetButtonEl.style.display = "flex";
+  gameSectionEl.style.display = "flex";
+
+  correctGuessedLetters = "";
+  wrongGuessedLetters = "";
+  blankSlots = "";
   currentWord = Math.floor(Math.random() * citiesArray.length);
-  currentWord = citiesArray[currentWord]
+  currentWord = citiesArray[currentWord];
   console.log(currentWord);
   console.log(currentWord.length);
-  currentWordEl.textContent = currentWord
-  gameSectionEl.style.display = "flex";
+
+  for (i = 0; i < currentWord.length; i++) {
+    blankSlots = blankSlots + "_";
+  }
+  currentWordEl.textContent = blankSlots;
 }
 
-document.onkeyup = function(event) {
+document.onkeyup = function (event) {
   var keyInput = event.key;
+  correctLetterLocation = "";
+
   if (correctGuessedLetters.includes(keyInput)) {
-      return
+    return;
   }
-  if (wrongGuessedLetters.includes(keyInput)){
-      return
+  if (wrongGuessedLetters.includes(keyInput)) {
+    return;
   }
   if (currentWord.includes(keyInput)) {
-    correctGuessedLetters = correctGuessedLetters + keyInput
-    console.log(correctGuessedLetters)
-    currentWordEl.textContent = correctGuessedLetters
+    correctGuessedLetters = correctGuessedLetters + keyInput;
+    for (y = 0; y < currentWord.length; y++) {
+      if (keyInput === currentWord[y]) {
+        correctLetterLocation = correctLetterLocation + y;
+        console.log(correctLetterLocation);
+
+        for (v = 0; v < correctLetterLocation.length; v++) {
+          blankSlots = blankSlots.replace(
+            blankSlots[correctLetterLocation[v]],
+            keyInput
+          );
+          console.log(blankSlots);
+        }
+      }
+    }
+    //    blankSlots = blankSlots.replace("_", /keyInput/gi)
   }
 };
