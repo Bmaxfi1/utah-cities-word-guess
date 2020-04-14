@@ -8,3 +8,6 @@ body {
     display: none;
     flex-direction: column;
 }
+.results {
+    font-size: 30px;
+}

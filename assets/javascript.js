@@ -294,6 +294,9 @@ var startButtonEl = document.getElementsByClassName("start-button")[0];
 var resetButtonEl = document.getElementsByClassName("reset-button")[0];
 var gameSectionEl = document.getElementsByClassName("game-section")[0];
 var currentWordEl = document.getElementsByClassName("current-word")[0];
+var lettersGuessedEl = document.getElementsByClassName("letters-guessed")[0];
+var resultsEl = document.getElementsByClassName("results")[0];
+var livesLeftEl = document.getElementsByClassName("lives-left")[0];
 
 // Game mechanism
 var currentWord = "";
@@ -303,28 +306,54 @@ var blankSlots = "";
 var correctLetterLocationArray = [];
 var incompleteWord = "";
 var updatedBlankSlots = "";
-let slotToChange = ""
-
-
-function replaceAt(index, char) {
-  var a = this.split("");
-  a[index] = char;
-  return a.join("");
-}
+var slotToChange = "";
+var currentWordLowercase = "";
+var letterArray = [
+  "a",
+  "b",
+  "c",
+  "d",
+  "e",
+  "f",
+  "g",
+  "h",
+  "i",
+  "j",
+  "k",
+  "l",
+  "m",
+  "n",
+  "o",
+  "p",
+  "q",
+  "r",
+  "s",
+  "t",
+  "u",
+  "v",
+  "w",
+  "x",
+  "y",
+  "z",
+];
+var livesLeft = 10;
 
 function initiateGame() {
   instructionsEl.style.display = "none";
   startButtonEl.style.display = "none";
   resetButtonEl.style.display = "flex";
   gameSectionEl.style.display = "flex";
-
+  resultsEl.style.display = "none";
   correctGuessedLetters = "";
   wrongGuessedLetters = "";
+  livesLeft = 10;
+  lettersGuessedEl.textContent = "Wrong Letters: ";
+  livesLeftEl.textContent = "Lives Left : " + livesLeft;
   blankSlots = "";
   currentWord = Math.floor(Math.random() * citiesArray.length);
   currentWord = citiesArray[currentWord];
+  currentWordLowercase = currentWord.toLowerCase();
   console.log(currentWord);
-  console.log(currentWord.length);
 
   for (i = 0; i < currentWord.length; i++) {
     blankSlots = blankSlots + "_";
@@ -333,40 +362,48 @@ function initiateGame() {
 }
 
 document.onkeyup = function (event) {
-  var keyInput = event.key;
+  var keyInput = event.key.toLowerCase();
   correctLetterLocationArray = [];
 
-  if (correctGuessedLetters.includes(keyInput)) {
-    return;
-  }
-  if (wrongGuessedLetters.includes(keyInput)) {
-    return;
-  }
-  if (currentWord.includes(keyInput)) {
-    correctGuessedLetters = correctGuessedLetters + keyInput;
-    //this for loop finds where the correct letters are located and puts the index into an array
-    for (y = 0; y < currentWord.length; y++) {
-      if (keyInput === currentWord[y]) {
-        correctLetterLocationArray.push(y)
-        console.log(correctLetterLocationArray);
-      }
+  if (letterArray.includes(keyInput)) {
+    if (correctGuessedLetters.includes(keyInput)) {
+      return;
     }
-    //this is where the blank slots are changed to letters
-    for (v = 0; v < correctLetterLocationArray.length; v++) {
-        slotToChange = null
-        slotToChange = correctLetterLocationArray[v]
-        console.log(slotToChange)
-
+    if (wrongGuessedLetters.includes(keyInput)) {
+      return;
+    }
+    if (currentWordLowercase.includes(keyInput)) {
+      correctGuessedLetters = correctGuessedLetters + keyInput;
+      //this for loop finds where the correct letters are located and puts the index into an array
+      for (y = 0; y < currentWord.length; y++) {
+        if (keyInput === currentWordLowercase[y]) {
+          correctLetterLocationArray.push(y);
+        }
+      }
+      //this is where the blank slots are changed to letters
+      for (v = 0; v < correctLetterLocationArray.length; v++) {
+        slotToChange = null;
+        slotToChange = correctLetterLocationArray[v];
         let x = blankSlots;
         let arr = x.split("");
-        arr.splice(slotToChange, 1, keyInput);
+        arr.splice(slotToChange, 1, currentWord[slotToChange]);
         let result = arr.join("");
-        blankSlots = result
+        blankSlots = result;
         currentWordEl.textContent = blankSlots;
-
+      }
+    } else {
+      wrongGuessedLetters = wrongGuessedLetters + keyInput;
+      livesLeft--;
+      lettersGuessedEl.textContent = "Wrong Letters: " + wrongGuessedLetters;
+      livesLeftEl.textContent = "Lives Left: " + livesLeft;
+      if (livesLeft === 0) {
+        resultsEl.style.display = "flex";
+        resultsEl.textContent = "You lost... try again?";
+      }
     }
-
-
-    console.log(blankSlots);
+    if (blankSlots.includes("_") != true) {
+      resultsEl.style.display = "flex";
+      resultsEl.textContent = "Winner!  You're a Utahn at heart.";
+    }
   }
 };
