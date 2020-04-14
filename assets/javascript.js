@@ -302,6 +302,13 @@ var wrongGuessedLetters = "";
 var blankSlots = "";
 var correctLetterLocation = "";
 var incompleteWord = "";
+var updatedBlankSlots = "";
+
+function replaceAt(index, char) {
+  var a = this.split("");
+  a[index] = char;
+  return a.join("");
+}
 
 function initiateGame() {
   instructionsEl.style.display = "none";
@@ -335,20 +342,28 @@ document.onkeyup = function (event) {
   }
   if (currentWord.includes(keyInput)) {
     correctGuessedLetters = correctGuessedLetters + keyInput;
+    //this for loop finds where the correct letters are located and puts the index into an array
     for (y = 0; y < currentWord.length; y++) {
       if (keyInput === currentWord[y]) {
         correctLetterLocation = correctLetterLocation + y;
         console.log(correctLetterLocation);
-
-        for (v = 0; v < correctLetterLocation.length; v++) {
-          blankSlots = blankSlots.replace(
-            blankSlots[correctLetterLocation[v]],
-            keyInput
-          );
-          console.log(blankSlots);
-        }
       }
     }
-    //    blankSlots = blankSlots.replace("_", /keyInput/gi)
+    //this is where the blank slots are changed to letters
+    for (v = 0; v < correctLetterLocation.length; v++) {
+        let slotToChange = correctLetterLocation[v]
+        console.log(slotToChange)
+
+        let x = blankSlots;
+        let arr = x.split("");
+        arr.splice(slotToChange, 1, keyInput);
+        let result = arr.join("");
+        blankSlots = result
+        currentWordEl.textContent = blankSlots;
+
+    }
+
+
+    console.log(blankSlots);
   }
 };
