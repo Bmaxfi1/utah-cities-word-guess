@@ -300,9 +300,11 @@ var currentWord = "";
 var correctGuessedLetters = "";
 var wrongGuessedLetters = "";
 var blankSlots = "";
-var correctLetterLocation = "";
+var correctLetterLocationArray = [];
 var incompleteWord = "";
 var updatedBlankSlots = "";
+let slotToChange = ""
+
 
 function replaceAt(index, char) {
   var a = this.split("");
@@ -332,7 +334,7 @@ function initiateGame() {
 
 document.onkeyup = function (event) {
   var keyInput = event.key;
-  correctLetterLocation = "";
+  correctLetterLocationArray = [];
 
   if (correctGuessedLetters.includes(keyInput)) {
     return;
@@ -345,13 +347,14 @@ document.onkeyup = function (event) {
     //this for loop finds where the correct letters are located and puts the index into an array
     for (y = 0; y < currentWord.length; y++) {
       if (keyInput === currentWord[y]) {
-        correctLetterLocation = correctLetterLocation + y;
-        console.log(correctLetterLocation);
+        correctLetterLocationArray.push(y)
+        console.log(correctLetterLocationArray);
       }
     }
     //this is where the blank slots are changed to letters
-    for (v = 0; v < correctLetterLocation.length; v++) {
-        let slotToChange = correctLetterLocation[v]
+    for (v = 0; v < correctLetterLocationArray.length; v++) {
+        slotToChange = null
+        slotToChange = correctLetterLocationArray[v]
         console.log(slotToChange)
 
         let x = blankSlots;
