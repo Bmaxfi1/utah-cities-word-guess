@@ -303,10 +303,12 @@ var currentWord = "";
 var correctGuessedLetters = "";
 var wrongGuessedLetters = "";
 var blankSlots = "";
+var blankSlotsWithSpaces = "";
 var correctLetterLocationArray = [];
 var incompleteWord = "";
 var updatedBlankSlots = "";
 var slotToChange = "";
+var splt = "";
 var currentWordLowercase = "";
 var letterArray = [
   "a",
@@ -358,7 +360,15 @@ function initiateGame() {
   for (i = 0; i < currentWord.length; i++) {
     blankSlots = blankSlots + "_";
   }
-  currentWordEl.textContent = blankSlots;
+
+  let splt = blankSlots.split("");
+  for (z = 0; z < splt.length; z = z + 2) {
+    splt.splice(z + 1, 0, " ");
+  }
+  var blankSlotsWithSpaces = splt.join("");
+  console.log(blankSlots);
+
+  currentWordEl.textContent = blankSlotsWithSpaces;
 }
 
 document.onkeyup = function (event) {
@@ -389,8 +399,15 @@ document.onkeyup = function (event) {
         arr.splice(slotToChange, 1, currentWord[slotToChange]);
         let result = arr.join("");
         blankSlots = result;
-        currentWordEl.textContent = blankSlots;
       }
+      let splt2 = blankSlots.split("");
+      for (z = 0; z < splt.length; z = z + 2) {
+        splt2.splice(z + 1, 0, " ");
+      }
+      blankSlotsWithSpaces = splt2.join(" ");
+    
+      currentWordEl.textContent = blankSlotsWithSpaces;
+
     } else {
       wrongGuessedLetters = wrongGuessedLetters + keyInput;
       livesLeft--;
@@ -401,7 +418,7 @@ document.onkeyup = function (event) {
         resultsEl.textContent = "You lost... try again?";
       }
     }
-    if (blankSlots.includes("_") != true) {
+    if (blankSlotsWithSpaces.includes("_") != true) {
       resultsEl.style.display = "flex";
       resultsEl.textContent = "Winner!  You're a Utahn at heart.";
     }
