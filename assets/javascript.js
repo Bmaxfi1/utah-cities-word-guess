@@ -352,6 +352,7 @@ function initiateGame() {
   lettersGuessedEl.textContent = "Wrong Letters: ";
   livesLeftEl.textContent = "Lives Left : " + livesLeft;
   blankSlots = "";
+  blankSlotsWithSpaces = "";
   currentWord = Math.floor(Math.random() * citiesArray.length);
   currentWord = citiesArray[currentWord];
   currentWordLowercase = currentWord.toLowerCase();
@@ -365,7 +366,7 @@ function initiateGame() {
   for (z = 0; z < splt.length; z = z + 2) {
     splt.splice(z + 1, 0, " ");
   }
-  var blankSlotsWithSpaces = splt.join("");
+  blankSlotsWithSpaces = splt.join("");
   console.log(blankSlots);
 
   currentWordEl.textContent = blankSlotsWithSpaces;
@@ -419,6 +420,7 @@ document.onkeyup = function (event) {
       }
     }
     if (blankSlotsWithSpaces.includes("_") != true) {
+      console.log(blankSlotsWithSpaces)
       resultsEl.style.display = "flex";
       resultsEl.textContent = "Winner!  You're a Utahn at heart.";
     }
