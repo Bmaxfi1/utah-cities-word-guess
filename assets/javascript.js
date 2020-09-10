@@ -370,59 +370,60 @@ function initiateGame() {
   console.log(blankSlots);
 
   currentWordEl.textContent = blankSlotsWithSpaces;
-}
 
-document.onkeyup = function (event) {
-  var keyInput = event.key.toLowerCase();
-  correctLetterLocationArray = [];
+  document.onkeyup = function (event) {
+    var keyInput = event.key.toLowerCase();
+    correctLetterLocationArray = [];
 
-  if (letterArray.includes(keyInput)) {
-    if (correctGuessedLetters.includes(keyInput)) {
-      return;
-    }
-    if (wrongGuessedLetters.includes(keyInput)) {
-      return;
-    }
-    if (currentWordLowercase.includes(keyInput)) {
-      correctGuessedLetters = correctGuessedLetters + keyInput;
-      //this for loop finds where the correct letters are located and puts the index into an array
-      for (y = 0; y < currentWord.length; y++) {
-        if (keyInput === currentWordLowercase[y]) {
-          correctLetterLocationArray.push(y);
+    if (letterArray.includes(keyInput)) {
+      if (correctGuessedLetters.includes(keyInput)) {
+        return;
+      }
+      if (wrongGuessedLetters.includes(keyInput)) {
+        return;
+      }
+      if (currentWordLowercase.includes(keyInput)) {
+        correctGuessedLetters = correctGuessedLetters + keyInput;
+        //this for loop finds where the correct letters are located and puts the index into an array
+        for (y = 0; y < currentWord.length; y++) {
+          if (keyInput === currentWordLowercase[y]) {
+            correctLetterLocationArray.push(y);
+          }
+        }
+        //this is where the blank slots are changed to letters
+        for (v = 0; v < correctLetterLocationArray.length; v++) {
+          slotToChange = null;
+          slotToChange = correctLetterLocationArray[v];
+          let x = blankSlots;
+          let arr = x.split("");
+          arr.splice(slotToChange, 1, currentWord[slotToChange]);
+          let result = arr.join("");
+          blankSlots = result;
+        }
+        let splt2 = blankSlots.split("");
+        for (z = 0; z < splt.length; z = z + 2) {
+          splt2.splice(z + 1, 0, " ");
+        }
+        blankSlotsWithSpaces = splt2.join(" ");
+
+        currentWordEl.textContent = blankSlotsWithSpaces;
+      } else {
+        wrongGuessedLetters = wrongGuessedLetters + keyInput;
+        livesLeft--;
+        lettersGuessedEl.textContent = "Wrong Letters: " + wrongGuessedLetters;
+        livesLeftEl.textContent = "Lives Left: " + livesLeft;
+        if (livesLeft === 0) {
+          resultsEl.style.display = "flex";
+          resultsEl.textContent = "You lost... try again?";
+          document.onkeyup = null;
         }
       }
-      //this is where the blank slots are changed to letters
-      for (v = 0; v < correctLetterLocationArray.length; v++) {
-        slotToChange = null;
-        slotToChange = correctLetterLocationArray[v];
-        let x = blankSlots;
-        let arr = x.split("");
-        arr.splice(slotToChange, 1, currentWord[slotToChange]);
-        let result = arr.join("");
-        blankSlots = result;
-      }
-      let splt2 = blankSlots.split("");
-      for (z = 0; z < splt.length; z = z + 2) {
-        splt2.splice(z + 1, 0, " ");
-      }
-      blankSlotsWithSpaces = splt2.join(" ");
-    
-      currentWordEl.textContent = blankSlotsWithSpaces;
-
-    } else {
-      wrongGuessedLetters = wrongGuessedLetters + keyInput;
-      livesLeft--;
-      lettersGuessedEl.textContent = "Wrong Letters: " + wrongGuessedLetters;
-      livesLeftEl.textContent = "Lives Left: " + livesLeft;
-      if (livesLeft === 0) {
+      if (blankSlotsWithSpaces.includes("_") != true) {
+        console.log(blankSlotsWithSpaces);
         resultsEl.style.display = "flex";
-        resultsEl.textContent = "You lost... try again?";
+        resultsEl.textContent = "Winner!  You're a Utahn at heart.";
+        document.onkeyup = null;
       }
     }
-    if (blankSlotsWithSpaces.includes("_") != true) {
-      console.log(blankSlotsWithSpaces)
-      resultsEl.style.display = "flex";
-      resultsEl.textContent = "Winner!  You're a Utahn at heart.";
-    }
-  }
-};
+  };
+}
