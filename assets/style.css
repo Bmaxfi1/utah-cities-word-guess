@@ -1,14 +1,38 @@
 body {
     font-family: Arial, Helvetica, sans-serif;
+    background-color: whitesmoke;
+}
+h1 {
+    background-color: rgb(233, 95, 95);
+    display: flex;
+    justify-content: space-around;
+    margin: 0px;
+    margin-bottom: 7px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.main-section {
+    background-color: wheat;
+    justify-items: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+.instructions {
+    display: block;
+    text-align: center;
 }
 .reset-button {
     display: none;
+    justify-content: space-around;
 }
 .game-section {
     display: none;
     flex-direction: column;
-    align-content: center;
+    justify-content: space-around;
+    text-align: center;
 }
 .results {
     font-size: 30px;
+    text-align: center;
+    justify-content: center;
 }
